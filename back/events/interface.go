@@ -4,17 +4,6 @@ import (
 	. "bitbucket.org/abdullin/proto/back/shared"
 )
 
-type Event interface {
-	Meta() *Info
-}
-
-type Contract string
-
-type Info struct {
-	Contract Contract
-	EventId  Id
-}
-
 func i(c Contract, eventId Id) *Info {
 	return &Info{c, eventId}
 }

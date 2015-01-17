@@ -30,12 +30,15 @@ type Context struct {
 }
 
 type registrar struct {
-	Module module.Module
-	Routes []*api.Route
+	Module   module.Module
+	Routes   []*api.Route
+	Handlers map[string]module.EventHandler
 }
 
 func newRegistrar() *registrar {
-	return &registrar{}
+	return &registrar{
+		Handlers: make(map[string]module.EventHandler),
+	}
 }
 
 func (r *registrar) HandleHttp(
@@ -43,4 +46,11 @@ func (r *registrar) HandleHttp(
 	path string,
 	handler api.Handler) {
 	r.Routes = append(r.Routes, api.NewRoute(method, path, handler))
+}
+
+func (r *registrar) HandleEvents(
+	name string,
+	handler module.EventHandler,
+) {
+	r.Handlers[name] = handler
 }
