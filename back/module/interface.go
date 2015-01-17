@@ -27,6 +27,8 @@ type EventHandler interface {
 	HandleEvent(e shared.Event) error
 }
 
+type EventHandlerMap map[string]EventHandler
+
 type Publisher interface {
 	Publish(e shared.Event) error
 	MustPublish(e shared.Event)

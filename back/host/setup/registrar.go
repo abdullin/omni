@@ -12,7 +12,7 @@ import (
 func modules(ms []module.Module) *Context {
 	var c = &Context{}
 	for _, m := range ms {
-		r := newRegistrar()
+		r := module.NewContainer()
 		m.Register(r)
 
 		c.Items = append(c.Items, r)
@@ -37,31 +37,5 @@ func (c *Context) WireHandlers(bus bus.Bus) {
 }
 
 type Context struct {
-	Items []*registrar
-}
-
-type registrar struct {
-	Module   module.Module
-	Routes   []*api.Route
-	Handlers map[string]module.EventHandler
-}
-
-func newRegistrar() *registrar {
-	return &registrar{
-		Handlers: make(map[string]module.EventHandler),
-	}
-}
-
-func (r *registrar) HandleHttp(
-	method string,
-	path string,
-	handler api.Handler) {
-	r.Routes = append(r.Routes, api.NewRoute(method, path, handler))
-}
-
-func (r *registrar) HandleEvents(
-	name string,
-	handler module.EventHandler,
-) {
-	r.Handlers[name] = handler
+	Items []*module.Container
 }
