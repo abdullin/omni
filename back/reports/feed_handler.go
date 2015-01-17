@@ -20,5 +20,4 @@ func (f *feedDenormalizer) HandleEvent(e shared.Event) error {
 		f.store.AddEvent(t)
 	}
 	return nil
-
 }

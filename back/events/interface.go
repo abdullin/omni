@@ -9,26 +9,54 @@ func i(c Contract, eventId Id) *Info {
 }
 
 type ProductCreated struct {
-	EventId   Id     `json:"eventId"`
-	ProductId Id     `json:"productId"`
-	SkuId     string `json:"sku"`
+	EventId   Id        `json:"eventId"`
+	ProductId ProductId `json:"productId"`
+	SkuId     string    `json:"sku"`
 }
 
 func (e *ProductCreated) Meta() *Info { return i("ProductCreated", e.EventId) }
 
+func NewProductCreated(event Id, product ProductId, sku string) *ProductCreated {
+	return &ProductCreated{event, product, sku}
+}
+
 type ItemAdded struct {
-	EventId   Id  `json:"eventId"`
-	ProductId Id  `json:"productId"`
-	Quantity  int `json:"quantity"`
-	Location  Id  `json:"location"`
+	EventId    Id         `json:"eventId"`
+	ProductId  ProductId  `json:"productId"`
+	LocationId LocationId `json:"locationId"`
+	Quantity   int        `json:"quantity"`
 }
 
 func (e *ItemAdded) Meta() *Info { return i("ItemAdded", e.EventId) }
 
+func NewItemAdded(event Id, product ProductId, location LocationId, quantity int) *ItemAdded {
+	return &ItemAdded{event, product, location, quantity}
+}
+
+type LocationId Id
+
+func NewLocationId() LocationId {
+	return LocationId(NewId())
+}
+
+type ProductId Id
+
+func NewProductId() ProductId {
+	return ProductId(NewId())
+}
+
 type LocationCreated struct {
-	EventId    Id     `json:"eventId"`
-	LocationId Id     `json:"locationId"`
-	Name       string `json:"name"`
+	EventId    Id         `json:"eventId"`
+	LocationId LocationId `json:"locationId"`
+	Name       string     `json:"name"`
 }
 
 func (e *LocationCreated) Meta() *Info { return i("LocationCreated", e.EventId) }
+
+func NewLocationCreated(event Id, loc LocationId, name string) *LocationCreated {
+	return &LocationCreated{event, loc, name}
+}
+
+type VirtualGroupCreated struct {
+	EventId Id `json:"eventId"`
+}
