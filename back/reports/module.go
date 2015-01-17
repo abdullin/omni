@@ -7,7 +7,9 @@ import (
 	"bitbucket.org/abdullin/proto/back/module"
 )
 
-type Module struct{}
+type Module struct {
+	pub module.Publisher
+}
 
 func (m *Module) Register(r module.Registrar) {
 	r.HandleHttp("GET", "/reports/tx", m.listTransactions)
@@ -22,8 +24,8 @@ func (m *Module) listTransactions(r *api.Request) api.Response {
 	return api.NewError("Not implemented", http.StatusOK)
 }
 
-func NewModule() module.Module {
-	return &Module{}
+func NewModule(pub module.Publisher) module.Module {
+	return &Module{pub}
 }
 
 var Spec = &module.Spec{

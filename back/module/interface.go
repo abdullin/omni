@@ -14,7 +14,7 @@ type Module interface {
 	Register(r Registrar)
 }
 
-type Factory func() Module
+type Factory func(pub Publisher) Module
 
 type Spec struct {
 	Name    string

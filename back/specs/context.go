@@ -1,0 +1,3 @@
+package specs
+
+func NewContext(){}
