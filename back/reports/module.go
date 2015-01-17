@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"bitbucket.org/abdullin/proto/back/api"
+	"bitbucket.org/abdullin/proto/back/events"
 	"bitbucket.org/abdullin/proto/back/module"
 )
 
@@ -21,6 +22,7 @@ func (m *Module) Register(r module.Registrar) {
 }
 
 func (m *Module) listTransactions(r *api.Request) api.Response {
+	m.pub.MustPublish(&events.ProductCreated{})
 	return api.NewError("Not implemented", http.StatusOK)
 }
 

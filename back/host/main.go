@@ -15,17 +15,19 @@ var l = logging.MustGetLogger("main")
 func main() {
 
 	router := mux.NewRouter()
-	bus := bus.NewMem()
+	memBus := bus.NewMem()
 
-	var ctx = setup.Modules(bus)
+	var wrap = bus.WrapWithLogging(memBus)
+
+	var ctx = setup.Modules(wrap)
 
 	bind := ":8001"
 	l.Info("Listening at %v", bind)
 
 	ctx.WireHttp(router)
-	ctx.WireHandlers(bus)
+	ctx.WireHandlers(memBus)
 
-	bus.Start()
+	memBus.Start()
 
 	l.Panic(http.ListenAndServe(bind, router))
 }
