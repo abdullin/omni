@@ -29,6 +29,10 @@ func makeScenarios(ucs []module.UseCaseFactory) []*scenario {
 
 func buildAndVerify(pub *publisher, spec *module.Spec, mod module.Module) *Results {
 
+	var results = NewResults()
+
+	results.failSanity("Spec tester not implemented")
+
 	// TODO: sanity checks
 	container := module.NewContainer()
 	mod.Register(container)
@@ -61,7 +65,7 @@ func buildAndVerify(pub *publisher, spec *module.Spec, mod module.Module) *Resul
 
 	}
 
-	return nil
+	return results
 }
 
 func needs(eh module.EventHandler, contract string) bool {
