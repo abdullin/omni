@@ -58,5 +58,21 @@ func NewLocationCreated(event Id, loc LocationId, name string) *LocationCreated 
 }
 
 type VirtualGroupCreated struct {
-	EventId Id `json:"eventId"`
+	EventId Id          `json:"eventId"`
+	GroupId ProductId   `json:"recipeId"`
+	Name    string      `json:"name"`
+	Items   ProductList `json:"items"`
 }
+
+type ProductList map[ProductId]int
+
+func NewVirtualGroupCreated(
+	event Id,
+	recipe ProductId,
+	name string,
+	items ProductList,
+) *VirtualGroupCreated {
+	return &VirtualGroupCreated{event, recipe, name, items}
+}
+
+func (e *VirtualGroupCreated) Meta() *Info { return i("VirtualGroupCreated", e.EventId) }

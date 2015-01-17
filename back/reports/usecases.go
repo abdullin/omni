@@ -16,13 +16,22 @@ func First() *spec.UseCase {
 	i1 := events.NewItemAdded(id(), p1.ProductId, l1.LocationId, 10)
 	i2 := events.NewItemAdded(id(), p2.ProductId, l1.LocationId, 20)
 
+	r1 := events.NewVirtualGroupCreated(id(), prod(), "Writer", events.ProductList{
+		p1.ProductId: 2,
+		p2.ProductId: 1,
+	})
+
 	return &spec.UseCase{
 		Given: []shared.Event{
-			p1, p2, l1, i1, i2,
+			p1, p2, l1, i1, i2, r1,
 		},
-		ThenEvents: seq.Map{
+		When: spec.Get("/reports/groups"),
+		ThenResponse: seq.Map{
+			"length": 1,
 			"[0]": seq.Map{
-				"contract": "ProductCreated",
+				"groupId":  r1.GroupId,
+				"quantity": 5,
+				"name":     "Writer",
 			},
 		},
 	}
