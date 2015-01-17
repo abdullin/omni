@@ -17,7 +17,7 @@ func modules(ms []module.Module) *Context {
 	return c
 }
 
-func (c *Context) Wire(router *mux.Router) {
+func (c *Context) WireHttp(router *mux.Router) {
 	for _, x := range c.Items {
 		for _, route := range x.Routes {
 			api.Handle(router, route)
