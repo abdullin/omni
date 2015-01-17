@@ -2,12 +2,17 @@ package reports
 
 import (
 	"bitbucket.org/abdullin/proto/back/events"
+	"bitbucket.org/abdullin/proto/back/module"
 	"bitbucket.org/abdullin/proto/back/seq"
 	"bitbucket.org/abdullin/proto/back/shared"
 	"bitbucket.org/abdullin/proto/back/spec"
 )
 
-func First() *spec.UseCase {
+var cases = []module.UseCaseFactory{
+	First,
+}
+
+func First() *module.UseCase {
 	p1 := events.NewProductCreated(id(), prod(), "pencil")
 	p2 := events.NewProductCreated(id(), prod(), "notepad")
 
@@ -21,7 +26,8 @@ func First() *spec.UseCase {
 		p2.ProductId: 1,
 	})
 
-	return &spec.UseCase{
+	return &module.UseCase{
+		Name: "First test this is",
 		Given: []shared.Event{
 			p1, p2, l1, i1, i2, r1,
 		},

@@ -4,7 +4,7 @@ import (
 	. "bitbucket.org/abdullin/proto/back/shared"
 )
 
-func i(c Contract, eventId Id) *Info {
+func i(c string, eventId Id) *Info {
 	return &Info{c, eventId}
 }
 

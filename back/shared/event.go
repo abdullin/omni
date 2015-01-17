@@ -7,6 +7,6 @@ type Event interface {
 type Contract string
 
 type Info struct {
-	Contract Contract
+	Contract string
 	EventId  Id
 }

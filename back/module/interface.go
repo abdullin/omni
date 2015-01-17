@@ -2,6 +2,7 @@ package module
 
 import (
 	"bitbucket.org/abdullin/proto/back/api"
+	"bitbucket.org/abdullin/proto/back/seq"
 	"bitbucket.org/abdullin/proto/back/shared"
 )
 
@@ -17,10 +18,13 @@ type Module interface {
 type Factory func(pub Publisher) Module
 
 type Spec struct {
-	Name    string
-	Schema  string
-	Factory Factory
+	Name     string
+	Schema   string
+	Factory  Factory
+	UseCases []UseCaseFactory
 }
+
+type UseCaseFactory func() *UseCase
 
 type EventHandler interface {
 	Contracts() []string
@@ -32,4 +36,19 @@ type EventHandlerMap map[string]EventHandler
 type Publisher interface {
 	Publish(e shared.Event) error
 	MustPublish(e shared.Event)
+}
+
+type Request struct {
+	Url    string
+	Method string
+}
+
+type UseCase struct {
+	Name string
+
+	Given []shared.Event
+	When  *Request
+
+	ThenEvents   seq.Map
+	ThenResponse seq.Map
 }

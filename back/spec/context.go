@@ -1,45 +1,27 @@
 package spec
 
-import (
-	"testing"
-
-	"bitbucket.org/abdullin/proto/back/module"
-	"bitbucket.org/abdullin/proto/back/seq"
-	"bitbucket.org/abdullin/proto/back/shared"
-)
-
-type UseCase struct {
-	Name string
-
-	Given []shared.Event
-	When  *Request
-
-	ThenEvents   seq.Map
-	ThenResponse seq.Map
-}
+import "bitbucket.org/abdullin/proto/back/module"
 
 func NewContext(spec *module.Spec) *Context {
-	return &Context{}
+	return &Context{
+		pub:  newPublisher(),
+		spec: spec,
+	}
 }
 
 type Context struct {
-	Pub module.Publisher
+	pub  *publisher
+	spec *module.Spec
+}
+
+func (c *Context) Pub() module.Publisher {
+	return c.pub
 }
 
 func (c *Context) Verify(m module.Module) *Results {
-	return nil
+	return buildAndVerify(c.pub, c.spec, m)
 }
 
-type Results struct {
-}
-
-func (v *Results) Report(t *testing.T) {}
-
-type Request struct {
-	Url    string
-	Method string
-}
-
-func Get(url string) *Request {
-	return &Request{url, "GET"}
+func Get(url string) *module.Request {
+	return &module.Request{url, "GET"}
 }
