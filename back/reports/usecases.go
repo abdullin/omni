@@ -13,8 +13,8 @@ var cases = []module.UseCaseFactory{
 }
 
 func First() *module.UseCase {
-	p1 := events.NewProductCreated(id(), prod(), "pencil")
-	p2 := events.NewProductCreated(id(), prod(), "notepad")
+	p1 := events.NewProductCreated(id(), prod(), "pencil", "PNC-1")
+	p2 := events.NewProductCreated(id(), prod(), "notepad", "NPD-1")
 
 	l1 := events.NewLocationCreated(id(), loc(), "loc1")
 

@@ -3,6 +3,7 @@ package spec
 import (
 	"fmt"
 	"net/http/httptest"
+	"net/url"
 	"testing"
 
 	"bitbucket.org/abdullin/proto/back/module"
@@ -66,6 +67,33 @@ func (r *Report) ToTesting(t *testing.T) {
 					fmt.Println("  ", i+1, prettyPrintEvent(e))
 
 				}
+			}
+
+			if r.UseCase.When != nil {
+				when := r.UseCase.When
+				uri, err := url.Parse(when.Path)
+				guard("url.Parse", err)
+				fmt.Println("WHEN", when.Method, uri.Path)
+				query := uri.Query()
+				if len(query) > 0 {
+					fmt.Println("  with")
+
+					for k, _ := range query {
+						fmt.Println("  %s = '%s'", k, query.Get(k))
+					}
+
+				}
+			}
+
+			if resp := r.UseCase.ThenResponse; resp != nil {
+				fmt.Println("EXPECT HTTP", resp.Status)
+				if resp.Body != nil {
+					fmt.Println(string(marshalIndent(resp.Body)))
+				}
+			}
+
+			if es := r.UseCase.ThenEvents; es != nil {
+				fmt.Println("EXPECT", len(es), "event(s)")
 			}
 
 			if len(r.ResponseDiffs) > 0 {
