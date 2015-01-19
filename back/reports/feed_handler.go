@@ -21,3 +21,11 @@ func (f *feedDenormalizer) HandleEvent(e shared.Event) error {
 	}
 	return nil
 }
+
+type GroupReportPageDto struct {
+	Items []*GroupReportItem
+}
+
+type GroupReportItem struct {
+	GroupId events.ProductId
+}

@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/binary"
 	"encoding/hex"
+	"fmt"
+	"strings"
 	"sync/atomic"
 	"time"
 
@@ -52,6 +54,60 @@ func (s Id) Equals(other Id) (eq bool) {
 	return
 }
 
-func (this Id) String() string {
-	return hex.EncodeToString(this[:])
+func (id Id) String() string {
+	return hex.EncodeToString(id[:])
+}
+func ParseId(value string) (id Id, err error) {
+	if len(value) == 0 {
+		err = fmt.Errorf("Invalid id: value is empty")
+		return
+	}
+
+	var b []byte
+	orgValue := value
+
+	if len(value) != 32 {
+		value = strings.Map(func(r rune) rune {
+			if r == '-' || r == '{' || r == '}' {
+				return -1
+			}
+			return r
+		}, value)
+	}
+
+	if b, err = hex.DecodeString(value); err != nil {
+		err = fmt.Errorf("invalid id %v: %v", orgValue, err.Error())
+		return
+	}
+
+	if len(b) != 16 {
+		err = fmt.Errorf("invalid id %v: did not convert to a 16 byte array", orgValue)
+		return
+	}
+
+	for index, value := range b {
+		id[index] = value
+	}
+
+	return
+}
+
+// JSON marshalling
+func (id Id) MarshalJSON() ([]byte, error) {
+
+	jsonString := `"` + hex.EncodeToString(id[:]) + `"`
+	return []byte(jsonString), nil
+}
+
+func (id *Id) UnmarshalJSON(data []byte) error {
+	jsonString := string(data)
+	valueString := strings.Trim(jsonString, "\"")
+
+	value, err := ParseId(valueString)
+	if err != nil {
+		return err
+	}
+
+	*id = value
+	return nil
 }
