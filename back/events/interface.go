@@ -39,10 +39,10 @@ func NewLocationId() LocationId {
 	return LocationId(NewId())
 }
 
-type ProductId Id
+type ProductId struct{ Id }
 
 func NewProductId() ProductId {
-	return ProductId(NewId())
+	return ProductId{NewId()}
 }
 
 type LocationCreated struct {

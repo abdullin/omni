@@ -32,7 +32,6 @@ func NewModule(pub module.Publisher) module.Module {
 
 var Spec = &module.Spec{
 	Name:     "inbox",
-	Schema:   schema,
 	Factory:  NewModule,
 	UseCases: cases,
 }

@@ -10,12 +10,16 @@ type publisher struct {
 	Events []shared.Event
 }
 
-func (this *publisher) MustPublish(e shared.Event) {
-	if err := this.Publish(e); err != nil {
+func (p *publisher) MustPublish(e shared.Event) {
+	if err := p.Publish(e); err != nil {
 		panic(err)
 	}
 }
-func (this *publisher) Publish(e shared.Event) error {
-	this.Events = append(this.Events, e)
+func (p *publisher) Publish(e shared.Event) error {
+	p.Events = append(p.Events, e)
 	return nil
+}
+
+func (p *publisher) Clear() {
+	p.Events = nil
 }

@@ -3,7 +3,6 @@ package reports
 import (
 	"bitbucket.org/abdullin/proto/back/events"
 	"bitbucket.org/abdullin/proto/back/module"
-	"bitbucket.org/abdullin/proto/back/seq"
 	"bitbucket.org/abdullin/proto/back/shared"
 	"bitbucket.org/abdullin/proto/back/spec"
 )
@@ -31,15 +30,8 @@ func First() *module.UseCase {
 		Given: []shared.Event{
 			p1, p2, l1, i1, i2, r1,
 		},
-		When: spec.Get("/reports/groups"),
-		ThenResponse: seq.Map{
-			"length": 1,
-			"[0]": seq.Map{
-				"groupId":  r1.GroupId,
-				"quantity": 5,
-				"name":     "Writer",
-			},
-		},
+		When:         spec.Get("/reports/groups"),
+		ThenResponse: spec.ReturnError(404),
 	}
 }
 

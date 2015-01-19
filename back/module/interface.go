@@ -1,8 +1,9 @@
 package module
 
 import (
+	"net/http"
+
 	"bitbucket.org/abdullin/proto/back/api"
-	"bitbucket.org/abdullin/proto/back/seq"
 	"bitbucket.org/abdullin/proto/back/shared"
 )
 
@@ -19,7 +20,6 @@ type Factory func(pub Publisher) Module
 
 type Spec struct {
 	Name     string
-	Schema   string
 	Factory  Factory
 	UseCases []UseCaseFactory
 }
@@ -39,8 +39,16 @@ type Publisher interface {
 }
 
 type Request struct {
-	Url    string
-	Method string
+	Method  string
+	Path    string
+	Headers http.Header
+	Body    interface{}
+}
+
+type Response struct {
+	Status  int         `json:"status"`
+	Headers http.Header `json:"headers"`
+	Body    interface{} `json:"body"`
 }
 
 type UseCase struct {
@@ -49,6 +57,6 @@ type UseCase struct {
 	Given []shared.Event
 	When  *Request
 
-	ThenEvents   seq.Map
-	ThenResponse seq.Map
+	ThenEvents   []interface{}
+	ThenResponse *Response
 }
