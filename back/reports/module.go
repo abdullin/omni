@@ -1,8 +1,6 @@
 package reports
 
 import (
-	"net/http"
-
 	"bitbucket.org/abdullin/proto/back/api"
 	"bitbucket.org/abdullin/proto/back/events"
 	"bitbucket.org/abdullin/proto/back/module"
@@ -13,7 +11,7 @@ type Module struct {
 }
 
 func (m *Module) Register(r module.Registrar) {
-	r.HandleHttp("GET", "/reports/tx", m.listTransactions)
+	r.HandleHttp("GET", "/reports/groups", m.listGroups)
 
 	var s = &store{}
 	var d1 = &feedDenormalizer{s}
@@ -21,9 +19,18 @@ func (m *Module) Register(r module.Registrar) {
 	r.HandleEvents("feed", d1)
 }
 
-func (m *Module) listTransactions(r *api.Request) api.Response {
+func (m *Module) listGroups(r *api.Request) api.Response {
+	// wild response
 	m.pub.MustPublish(&events.ProductCreated{})
-	return api.NewError("Not implemented", http.StatusOK)
+
+	return api.NewJSON(&GroupReportPageDto{
+		Items: []*GroupReportItem{
+			&GroupReportItem{
+				Quantity: 3,
+				Name:     "hardcoded",
+			},
+		},
+	})
 }
 
 func NewModule(pub module.Publisher) module.Module {

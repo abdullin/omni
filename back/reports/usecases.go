@@ -32,7 +32,7 @@ func First() *module.UseCase {
 			p1, p2, l1, i1, i2, r1,
 		},
 		When: spec.Get("/reports/groups"),
-		// match response
+
 		ThenResponse: spec.ReturnJSON(seq.Map{
 			"items[0]": seq.Map{
 				"groupId":  r1.GroupId,

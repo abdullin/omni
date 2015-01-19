@@ -138,8 +138,8 @@ func decodeBody(response *httptest.ResponseRecorder) interface{} {
 
 	switch contentType {
 	case "application/json":
-		var body interface{}
-		unmarshal(response.Body.Bytes(), body)
+		var body map[string]interface{}
+		unmarshal(response.Body.Bytes(), &body)
 		return body
 	default:
 		return response.Body.String()
