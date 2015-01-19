@@ -24,5 +24,4 @@ func ReturnJSON(response interface{}) *module.Response {
 			"Content-Type": []string{"application/json"},
 		},
 	}
-
 }

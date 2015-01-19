@@ -21,9 +21,9 @@ func First() *module.UseCase {
 	i1 := events.NewItemAdded(id(), p1.ProductId, l1.LocationId, 10)
 	i2 := events.NewItemAdded(id(), p2.ProductId, l1.LocationId, 20)
 
-	r1 := events.NewVirtualGroupCreated(id(), prod(), "Writer", events.ProductList{
-		p1.ProductId: 2,
-		p2.ProductId: 1,
+	r1 := events.NewVirtualGroupCreated(id(), prod(), "Writer", []events.ProductLine{
+		line(p1.ProductId, 2),
+		line(p2.ProductId, 1),
 	})
 
 	return &module.UseCase{
@@ -37,8 +37,10 @@ func First() *module.UseCase {
 			"items[0]": seq.Map{
 				"groupId":  r1.GroupId,
 				"quantity": 5,
+				"name":     "Writer",
 			},
 		}),
+		ThenEvents: spec.Events(),
 	}
 }
 
@@ -52,4 +54,7 @@ func loc() events.LocationId {
 
 func prod() events.ProductId {
 	return events.NewProductId()
+}
+func line(id events.ProductId, quantity int) events.ProductLine {
+	return events.ProductLine{id, quantity}
 }

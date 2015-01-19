@@ -21,13 +21,14 @@ func (m *Module) Register(r module.Registrar) {
 
 func (m *Module) listGroups(r *api.Request) api.Response {
 	// wild response
-	m.pub.MustPublish(&events.ProductCreated{})
+	//m.pub.MustPublish(&events.ProductCreated{})
 
 	return api.NewJSON(&GroupReportPageDto{
 		Items: []*GroupReportItem{
 			&GroupReportItem{
 				Quantity: 3,
 				Name:     "hardcoded",
+				GroupId:  events.NewProductId(),
 			},
 		},
 	})

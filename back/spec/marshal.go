@@ -14,14 +14,14 @@ func unmarshal(d []byte, i interface{}) {
 func marshal(i interface{}) []byte {
 	b, err := json.Marshal(i)
 	if err != nil {
-		panic("Failed to marshal")
+		panic("Failed to marshal: " + err.Error())
 	}
 	return b
 }
 func marshalIndent(i interface{}) []byte {
 	b, err := json.MarshalIndent(i, "", "  ")
 	if err != nil {
-		panic("Failed to marshal")
+		panic("Failed to marshal: " + err.Error())
 	}
 	return b
 }

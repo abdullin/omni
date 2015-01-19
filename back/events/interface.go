@@ -33,10 +33,10 @@ func NewItemAdded(event Id, product ProductId, location LocationId, quantity int
 	return &ItemAdded{event, product, location, quantity}
 }
 
-type LocationId Id
+type LocationId struct{ Id }
 
 func NewLocationId() LocationId {
-	return LocationId(NewId())
+	return LocationId{NewId()}
 }
 
 type ProductId struct{ Id }
@@ -58,19 +58,22 @@ func NewLocationCreated(event Id, loc LocationId, name string) *LocationCreated 
 }
 
 type VirtualGroupCreated struct {
-	EventId Id          `json:"eventId"`
-	GroupId ProductId   `json:"recipeId"`
-	Name    string      `json:"name"`
-	Items   ProductList `json:"items"`
+	EventId Id            `json:"eventId"`
+	GroupId ProductId     `json:"recipeId"`
+	Name    string        `json:"name"`
+	Items   []ProductLine `json:"items"`
 }
 
-type ProductList map[ProductId]int
+type ProductLine struct {
+	ProductId ProductId `json:"productId"`
+	Quantity  int       `json:"quantity"`
+}
 
 func NewVirtualGroupCreated(
 	event Id,
 	recipe ProductId,
 	name string,
-	items ProductList,
+	items []ProductLine,
 ) *VirtualGroupCreated {
 	return &VirtualGroupCreated{event, recipe, name, items}
 }

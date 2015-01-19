@@ -60,10 +60,7 @@ func buildAndVerify(pub *publisher, spec *module.Spec, mod module.Module) *Repor
 		response := performRequest(s.UseCase.When, router)
 		events := pub.Events
 
-		//fmt.Println(response)
-
-		eventsResult := seq.Test(s.UseCase.ThenEvents, events)
-
+		eventsResult := verifyEvents(s.UseCase.ThenEvents, events)
 		responseResult := verifyResponse(s.UseCase.ThenResponse, response)
 
 		//fmt.Println(responseResult.Diffs)
@@ -71,7 +68,7 @@ func buildAndVerify(pub *publisher, spec *module.Spec, mod module.Module) *Repor
 			UseCase:       s.UseCase,
 			Response:      response,
 			Events:        events,
-			EventsDiffs:   eventsResult.Diffs,
+			EventsDiffs:   eventsResult,
 			ResponseDiffs: responseResult,
 		}
 
@@ -145,7 +142,11 @@ func decodeBody(response *httptest.ResponseRecorder) interface{} {
 		return response.Body.String()
 
 	}
+}
 
+func verifyEvents(then []interface{}, actual []shared.Event) []string {
+	result := seq.Test(then, actual)
+	return result.Diffs
 }
 
 func verifyResponse(then *module.Response, recorded *httptest.ResponseRecorder) []string {
