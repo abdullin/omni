@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"bitbucket.org/abdullin/proto/back/module"
-	"bitbucket.org/abdullin/proto/back/shared"
+	"github.com/abdullin/omni/module"
+	"github.com/abdullin/omni/shared"
 )
 
 type mem struct {

@@ -1,7 +1,7 @@
 package module
 
 import (
-	"bitbucket.org/abdullin/proto/back/api"
+	"github.com/abdullin/omni/api"
 )
 
 func NewContainer() *Container {

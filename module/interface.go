@@ -3,8 +3,8 @@ package module
 import (
 	"net/http"
 
-	"bitbucket.org/abdullin/proto/back/api"
-	"bitbucket.org/abdullin/proto/back/shared"
+	"github.com/abdullin/omni/api"
+	"github.com/abdullin/omni/shared"
 )
 
 type Registrar interface {

@@ -5,8 +5,8 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"bitbucket.org/abdullin/proto/back/bus"
-	"bitbucket.org/abdullin/proto/back/host/setup"
+	"github.com/abdullin/omni/bus"
+	"github.com/abdullin/omni/host/setup"
 	"github.com/op/go-logging"
 )
 

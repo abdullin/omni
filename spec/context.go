@@ -1,6 +1,6 @@
 package spec
 
-import "bitbucket.org/abdullin/proto/back/module"
+import "github.com/abdullin/omni/module"
 
 func NewContext(spec *module.Spec) *Context {
 	return &Context{

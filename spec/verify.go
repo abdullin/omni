@@ -8,9 +8,9 @@ import (
 
 	"bytes"
 
-	"bitbucket.org/abdullin/proto/back/api"
-	"bitbucket.org/abdullin/proto/back/module"
-	"bitbucket.org/abdullin/proto/back/shared"
+	"github.com/abdullin/omni/api"
+	"github.com/abdullin/omni/module"
+	"github.com/abdullin/omni/shared"
 	"github.com/abdullin/seq"
 	"github.com/gorilla/mux"
 )

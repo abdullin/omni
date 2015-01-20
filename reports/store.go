@@ -1,6 +1,6 @@
 package reports
 
-import "bitbucket.org/abdullin/proto/back/shared"
+import "github.com/abdullin/omni/shared"
 
 type store struct {
 	Events []shared.Event

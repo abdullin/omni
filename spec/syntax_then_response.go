@@ -3,7 +3,7 @@ package spec
 import (
 	"net/http"
 
-	"bitbucket.org/abdullin/proto/back/module"
+	"github.com/abdullin/omni/module"
 )
 
 // default errors are in JSON

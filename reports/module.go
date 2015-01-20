@@ -1,6 +1,6 @@
 package reports
 
-import "bitbucket.org/abdullin/proto/back/module"
+import "github.com/abdullin/omni/module"
 
 type Module struct {
 	pub module.Publisher

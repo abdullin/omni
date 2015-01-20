@@ -1,6 +1,6 @@
 package spec
 
-import "bitbucket.org/abdullin/proto/back/shared"
+import "github.com/abdullin/omni/shared"
 
 func newPublisher() *publisher {
 	return &publisher{}

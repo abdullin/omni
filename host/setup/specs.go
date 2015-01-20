@@ -1,8 +1,8 @@
 package setup
 
 import (
-	"bitbucket.org/abdullin/proto/back/module"
-	"bitbucket.org/abdullin/proto/back/reports"
+	"github.com/abdullin/omni/module"
+	"github.com/abdullin/omni/reports"
 )
 
 var Specs = []*module.Spec{

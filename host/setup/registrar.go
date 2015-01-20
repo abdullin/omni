@@ -1,11 +1,11 @@
 package setup
 
 import (
-	"bitbucket.org/abdullin/proto/back/api"
+	"github.com/abdullin/omni/api"
 
-	"bitbucket.org/abdullin/proto/back/bus"
+	"github.com/abdullin/omni/bus"
 
-	"bitbucket.org/abdullin/proto/back/module"
+	"github.com/abdullin/omni/module"
 	"github.com/gorilla/mux"
 )
 

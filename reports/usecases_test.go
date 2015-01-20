@@ -3,7 +3,7 @@ package reports
 import (
 	"testing"
 
-	"bitbucket.org/abdullin/proto/back/spec"
+	"github.com/abdullin/omni/spec"
 )
 
 func TestUseCases(t *testing.T) {

@@ -1,6 +1,6 @@
 package setup
 
-import "bitbucket.org/abdullin/proto/back/module"
+import "github.com/abdullin/omni/module"
 
 func Modules(pub module.Publisher) *Context {
 

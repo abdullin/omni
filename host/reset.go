@@ -1,8 +1,8 @@
 package main
 
 import (
-	"bitbucket.org/abdullin/proto/back/db"
-	"bitbucket.org/abdullin/proto/back/host/setup"
+	"github.com/abdullin/omni/db"
+	"github.com/abdullin/omni/host/setup"
 	"github.com/op/go-logging"
 )
 
