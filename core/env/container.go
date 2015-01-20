@@ -1,4 +1,4 @@
-package module
+package env
 
 import (
 	"github.com/abdullin/omni/core/api"

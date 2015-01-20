@@ -1,4 +1,4 @@
-package module
+package env
 
 import (
 	"net/http"
@@ -28,14 +28,14 @@ type UseCaseFactory func() *UseCase
 
 type EventHandler interface {
 	Contracts() []string
-	HandleEvent(e shared.Event) error
+	HandleEvent(e core.Event) error
 }
 
 type EventHandlerMap map[string]EventHandler
 
 type Publisher interface {
-	Publish(e shared.Event) error
-	MustPublish(e shared.Event)
+	Publish(e core.Event) error
+	MustPublish(e core.Event)
 }
 
 type Request struct {
@@ -54,7 +54,7 @@ type Response struct {
 type UseCase struct {
 	Name string
 
-	Given []shared.Event
+	Given []core.Event
 	When  *Request
 
 	ThenEvents   []interface{}
