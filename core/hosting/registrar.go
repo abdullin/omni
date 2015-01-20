@@ -9,10 +9,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func modules(ms []module.Module) *Context {
+func modules(ms []env.Module) *Context {
 	var c = &Context{}
 	for _, m := range ms {
-		r := module.NewContainer()
+		r := env.NewContainer()
 		m.Register(r)
 
 		c.Items = append(c.Items, r)
@@ -37,5 +37,5 @@ func (c *Context) WireHandlers(bus bus.Bus) {
 }
 
 type Context struct {
-	Items []*module.Container
+	Items []*env.Container
 }
