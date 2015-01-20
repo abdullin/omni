@@ -1,6 +1,6 @@
 package reports
 
-import "github.com/abdullin/omni/shared"
+import "github.com/abdullin/omni/core"
 
 type store struct {
 	Events []shared.Event

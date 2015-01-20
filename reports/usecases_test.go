@@ -3,7 +3,7 @@ package reports
 import (
 	"testing"
 
-	"github.com/abdullin/omni/spec"
+	"github.com/abdullin/omni/core/spec"
 )
 
 func TestUseCases(t *testing.T) {

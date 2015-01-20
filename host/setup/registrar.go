@@ -1,11 +1,11 @@
 package setup
 
 import (
-	"github.com/abdullin/omni/api"
+	"github.com/abdullin/omni/core/api"
 
-	"github.com/abdullin/omni/bus"
+	"github.com/abdullin/omni/core/bus"
 
-	"github.com/abdullin/omni/module"
+	"github.com/abdullin/omni/core/env"
 	"github.com/gorilla/mux"
 )
 

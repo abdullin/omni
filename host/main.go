@@ -5,7 +5,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/abdullin/omni/bus"
+	"github.com/abdullin/omni/core/bus"
 	"github.com/abdullin/omni/host/setup"
 	"github.com/op/go-logging"
 )

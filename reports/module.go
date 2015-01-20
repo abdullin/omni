@@ -1,6 +1,6 @@
 package reports
 
-import "github.com/abdullin/omni/module"
+import "github.com/abdullin/omni/core/env"
 
 type Module struct {
 	pub module.Publisher

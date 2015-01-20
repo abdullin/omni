@@ -3,8 +3,8 @@ package module
 import (
 	"net/http"
 
-	"github.com/abdullin/omni/api"
-	"github.com/abdullin/omni/shared"
+	"github.com/abdullin/omni/core"
+	"github.com/abdullin/omni/core/api"
 )
 
 type Registrar interface {

@@ -1,6 +1,6 @@
 package setup
 
-import "github.com/abdullin/omni/module"
+import "github.com/abdullin/omni/core/env"
 
 func Modules(pub module.Publisher) *Context {
 

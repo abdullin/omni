@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/abdullin/omni/module"
-	"github.com/abdullin/omni/shared"
+	"github.com/abdullin/omni/core/env"
+	"github.com/abdullin/omni/core"
 )
 
 type mem struct {

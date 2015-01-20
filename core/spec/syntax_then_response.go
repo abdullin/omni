@@ -3,7 +3,7 @@ package spec
 import (
 	"net/http"
 
-	"github.com/abdullin/omni/module"
+	"github.com/abdullin/omni/core/env"
 )
 
 // default errors are in JSON

@@ -1,6 +1,6 @@
 package spec
 
-import "github.com/abdullin/omni/shared"
+import "github.com/abdullin/omni/core"
 
 func newPublisher() *publisher {
 	return &publisher{}
