@@ -1,8 +1,8 @@
-package setup
+package hosting
 
 import "github.com/abdullin/omni/core/env"
 
-func Modules(pub env.Publisher, specs []*env.Spec) *Context {
+func New(pub env.Publisher, specs []*env.Spec) *Context {
 
 	var c = &Context{}
 	for _, spec := range specs {

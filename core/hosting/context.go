@@ -1,4 +1,4 @@
-package setup
+package hosting
 
 import (
 	"github.com/abdullin/omni/core/api"
