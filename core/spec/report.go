@@ -6,14 +6,14 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/abdullin/omni/core/env"
 	"github.com/abdullin/omni/core"
+	"github.com/abdullin/omni/core/env"
 )
 
 // Scenario result
 type Result struct {
-	UseCase  *module.UseCase
-	Events   []shared.Event
+	UseCase  *env.UseCase
+	Events   []core.Event
 	Response *httptest.ResponseRecorder
 
 	EventsDiffs   []string
@@ -37,7 +37,7 @@ func (r *Report) failSanity(s string, args ...interface{}) {
 	r.Insanity = append(r.Insanity, fmt.Sprintf(s, args...))
 }
 
-func prettyPrintEvent(e shared.Event) string {
+func prettyPrintEvent(e core.Event) string {
 	if e == nil {
 		return fmt.Sprintf("%T<nil>", e)
 	}
@@ -79,7 +79,7 @@ func (r *Report) ToTesting(t *testing.T) {
 					fmt.Println("  with")
 
 					for k, _ := range query {
-						fmt.Println("  %s = '%s'", k, query.Get(k))
+						fmt.Printf("  %s = '%s'\n", k, query.Get(k))
 					}
 
 				}

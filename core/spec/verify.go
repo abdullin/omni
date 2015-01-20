@@ -8,18 +8,18 @@ import (
 
 	"bytes"
 
+	"github.com/abdullin/omni/core"
 	"github.com/abdullin/omni/core/api"
 	"github.com/abdullin/omni/core/env"
-	"github.com/abdullin/omni/core"
 	"github.com/abdullin/seq"
 	"github.com/gorilla/mux"
 )
 
 type scenario struct {
-	UseCase *module.UseCase
+	UseCase *env.UseCase
 }
 
-func makeScenarios(ucs []module.UseCaseFactory) []*scenario {
+func makeScenarios(ucs []env.UseCaseFactory) []*scenario {
 
 	var out = []*scenario{}
 
@@ -33,12 +33,12 @@ func makeScenarios(ucs []module.UseCaseFactory) []*scenario {
 
 }
 
-func buildAndVerify(pub *publisher, spec *module.Spec, mod module.Module) *Report {
+func buildAndVerify(pub *publisher, spec *env.Spec, mod env.Module) *Report {
 
 	var report = NewReport()
 
 	// TODO: sanity checks
-	container := module.NewContainer()
+	container := env.NewContainer()
 	mod.Register(container)
 
 	// wire routes
@@ -83,7 +83,7 @@ func guard(name string, err error) {
 		panic(fmt.Errorf("%s: %s", name, err))
 	}
 }
-func dispatchEvents(given []shared.Event, handlers module.EventHandlerMap) {
+func dispatchEvents(given []core.Event, handlers env.EventHandlerMap) {
 
 	for _, e := range given {
 		contract := e.Meta().Contract
@@ -97,7 +97,7 @@ func dispatchEvents(given []shared.Event, handlers module.EventHandlerMap) {
 	}
 }
 
-func performRequest(when *module.Request, router http.Handler) *httptest.ResponseRecorder {
+func performRequest(when *env.Request, router http.Handler) *httptest.ResponseRecorder {
 	server := httptest.NewServer(router)
 	defer server.Close()
 
@@ -144,12 +144,12 @@ func decodeBody(response *httptest.ResponseRecorder) interface{} {
 	}
 }
 
-func verifyEvents(then []interface{}, actual []shared.Event) []string {
+func verifyEvents(then []interface{}, actual []core.Event) []string {
 	result := seq.Test(then, actual)
 	return result.Diffs
 }
 
-func verifyResponse(then *module.Response, recorded *httptest.ResponseRecorder) []string {
+func verifyResponse(then *env.Response, recorded *httptest.ResponseRecorder) []string {
 	expected := seq.Map{
 		"Status":  then.Status,
 		"Headers": then.Headers,

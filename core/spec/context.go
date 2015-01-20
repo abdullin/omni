@@ -2,7 +2,7 @@ package spec
 
 import "github.com/abdullin/omni/core/env"
 
-func NewContext(spec *module.Spec) *Context {
+func NewContext(spec *env.Spec) *Context {
 	return &Context{
 		pub:  newPublisher(),
 		spec: spec,
@@ -11,17 +11,17 @@ func NewContext(spec *module.Spec) *Context {
 
 type Context struct {
 	pub  *publisher
-	spec *module.Spec
+	spec *env.Spec
 }
 
-func (c *Context) Pub() module.Publisher {
+func (c *Context) Pub() env.Publisher {
 	return c.pub
 }
 
-func (c *Context) Verify(m module.Module) *Report {
+func (c *Context) Verify(m env.Module) *Report {
 	return buildAndVerify(c.pub, c.spec, m)
 }
 
-func Get(url string) *module.Request {
-	return &module.Request{"GET", url, nil, ""}
+func Get(url string) *env.Request {
+	return &env.Request{"GET", url, nil, ""}
 }

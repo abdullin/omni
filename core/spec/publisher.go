@@ -7,15 +7,15 @@ func newPublisher() *publisher {
 }
 
 type publisher struct {
-	Events []shared.Event
+	Events []core.Event
 }
 
-func (p *publisher) MustPublish(e shared.Event) {
+func (p *publisher) MustPublish(e core.Event) {
 	if err := p.Publish(e); err != nil {
 		panic(err)
 	}
 }
-func (p *publisher) Publish(e shared.Event) error {
+func (p *publisher) Publish(e core.Event) error {
 	p.Events = append(p.Events, e)
 	return nil
 }
