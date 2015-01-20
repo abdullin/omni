@@ -1,4 +1,4 @@
-package shared
+package core
 
 type Event interface {
 	Meta() *Info
