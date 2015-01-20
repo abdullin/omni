@@ -3,8 +3,8 @@ package bus
 import (
 	"fmt"
 
-	"github.com/abdullin/omni/core/env"
 	"github.com/abdullin/omni/core"
+	"github.com/abdullin/omni/core/env"
 	"github.com/op/go-logging"
 )
 
@@ -13,14 +13,14 @@ var (
 )
 
 type LoggingWrapper struct {
-	inner module.Publisher
+	inner env.Publisher
 }
 
-func WrapWithLogging(p module.Publisher) module.Publisher {
+func WrapWithLogging(p env.Publisher) env.Publisher {
 	return &LoggingWrapper{p}
 }
 
-func log(e shared.Event) {
+func log(e core.Event) {
 	switch e := e.(type) {
 	case fmt.Stringer:
 		l.Debug("%v", e.String())
@@ -30,11 +30,11 @@ func log(e shared.Event) {
 	}
 }
 
-func (p *LoggingWrapper) Publish(e shared.Event) error {
+func (p *LoggingWrapper) Publish(e core.Event) error {
 	log(e)
 	return p.inner.Publish(e)
 }
-func (p *LoggingWrapper) MustPublish(e shared.Event) {
+func (p *LoggingWrapper) MustPublish(e core.Event) {
 	log(e)
 	p.inner.MustPublish(e)
 }

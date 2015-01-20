@@ -5,26 +5,26 @@ import (
 	"sync"
 	"time"
 
-	"github.com/abdullin/omni/core/env"
 	"github.com/abdullin/omni/core"
+	"github.com/abdullin/omni/core/env"
 )
 
 type mem struct {
-	c        chan shared.Event
-	handlers map[string]module.EventHandler
+	c        chan core.Event
+	handlers map[string]env.EventHandler
 	started  bool
 
 	mu sync.Mutex
 }
 
-func (m *mem) AddEventHandler(name string, h module.EventHandler) {
+func (m *mem) AddEventHandler(name string, h env.EventHandler) {
 	m.handlers[name] = h
 }
 
-func (m *mem) MustPublish(e shared.Event) {
+func (m *mem) MustPublish(e core.Event) {
 	m.c <- e
 }
-func (m *mem) Publish(e shared.Event) error {
+func (m *mem) Publish(e core.Event) error {
 	m.c <- e
 	return nil
 }
@@ -46,7 +46,7 @@ func (m *mem) Start() {
 	}()
 }
 
-func (m *mem) dispatch(e shared.Event) {
+func (m *mem) dispatch(e core.Event) {
 	for name, h := range m.handlers {
 		if err := handleWithTimeout(h, e); err != nil {
 			var contract = e.Meta().Contract
@@ -55,7 +55,7 @@ func (m *mem) dispatch(e shared.Event) {
 	}
 }
 
-func handleWithTimeout(h module.EventHandler, e shared.Event) (err error) {
+func handleWithTimeout(h env.EventHandler, e core.Event) (err error) {
 	c := make(chan error, 1)
 
 	defer func() {
@@ -79,14 +79,14 @@ func handleWithTimeout(h module.EventHandler, e shared.Event) (err error) {
 }
 
 type Bus interface {
-	AddEventHandler(name string, h module.EventHandler)
-	module.Publisher
+	AddEventHandler(name string, h env.EventHandler)
+	env.Publisher
 	Start()
 }
 
 func NewMem() Bus {
 	return &mem{
-		c:        make(chan shared.Event, 10000),
-		handlers: make(map[string]module.EventHandler),
+		c:        make(chan core.Event, 10000),
+		handlers: make(map[string]env.EventHandler),
 	}
 }
