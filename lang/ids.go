@@ -41,9 +41,6 @@ func NewTaskUnhecked(event Id, task TaskId) *TaskUnchecked {
 	return &TaskUnchecked{event, task}
 }
 
-func (e *TaskAdded) Meta() *Info   { return i("TaskAdded", e.EventId) }
-func (e *TaskChecked) Meta() *Info { return i("TaskChecked", e.EventId) }
-
 type TaskStarred struct {
 	EventId Id     `json:"eventId"`
 	TaskId  TaskId `json:"taskId"`
@@ -52,8 +49,6 @@ type TaskStarred struct {
 func NewTaskStarred(event Id, task TaskId) *TaskStarred {
 	return &TaskStarred{event, task}
 }
-
-func (e *TaskStarred) Meta() *Info { return i("TaskStarred", e.EventId) }
 
 type TaskUnstarred struct {
 	EventId Id     `json:"eventId"`
@@ -64,4 +59,7 @@ func NewTaskUnstarred(event Id, task TaskId) *TaskUnstarred {
 	return &TaskUnstarred{event, task}
 }
 
+func (e *TaskAdded) Meta() *Info     { return i("TaskAdded", e.EventId) }
+func (e *TaskChecked) Meta() *Info   { return i("TaskChecked", e.EventId) }
+func (e *TaskStarred) Meta() *Info   { return i("TaskStarred", e.EventId) }
 func (e *TaskUnstarred) Meta() *Info { return i("TaskUnstarred", e.EventId) }
