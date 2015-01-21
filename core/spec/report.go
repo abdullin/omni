@@ -51,15 +51,28 @@ func prettyPrintEvent(e core.Event) string {
 
 func (r *Report) ToTesting(t *testing.T) {
 
+	fmt.Println("================= SUMMARY =================")
 	for _, x := range r.Insanity {
 		t.Fail()
 		fmt.Println("☹", x)
 	}
 
+	specFailed := false
 	for _, r := range r.Resuls {
-		if !r.Ok() {
+		if r.Ok() {
+			fmt.Println("♥", r.UseCase.Name)
+		} else {
+			specFailed = true
+			fmt.Println("✗", r.UseCase.Name)
+		}
+	}
+
+	if specFailed {
+		fmt.Println("\n================= DETAILS =================")
+
+		for _, r := range r.Resuls {
 			t.Fail()
-			fmt.Println("X", r.UseCase.Name)
+			fmt.Println("✗", r.UseCase.Name)
 
 			if len(r.UseCase.Given) > 0 {
 				fmt.Println("GIVEN")
@@ -111,8 +124,6 @@ func (r *Report) ToTesting(t *testing.T) {
 				}
 			}
 
-		} else {
-			fmt.Println("V", r.UseCase.Name)
 		}
 	}
 
