@@ -6,14 +6,19 @@ import "github.com/abdullin/omni/core/env"
 
 type Module struct {
 	pub env.Publisher
+	d   *denormalizer
+	s   *store
 }
 
 func NewModule(pub env.Publisher) *Module {
-	return &Module{pub}
+	store := newStore()
+	denormalizer := newDenormalizer(store)
+	return &Module{pub, denormalizer, store}
 }
 
 func (m *Module) Register(r env.Registrar) {
 	r.HandleHttp("GET", "/views/inbox", m.getInbox)
+	r.HandleEvents("views-denormalizer", m.d)
 }
 
 var Spec = &env.Spec{
