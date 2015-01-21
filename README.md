@@ -21,4 +21,5 @@ Solution is composed from the core infrastructure and actual domain implementati
 **Domain**:
 
 * `lang` - domain language (value objects and events)
+* `views` - module with basic views for the client
 * _all the rest_ - event-driven modules with features
