@@ -21,7 +21,3 @@ func (c *Context) Pub() env.Publisher {
 func (c *Context) Verify(m env.Module) *Report {
 	return buildAndVerify(c.pub, c.spec, m)
 }
-
-func Get(url string) *env.Request {
-	return &env.Request{"GET", url, nil, ""}
-}
