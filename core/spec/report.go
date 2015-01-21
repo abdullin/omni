@@ -99,10 +99,12 @@ func (r *Report) ToTesting(t *testing.T) {
 			}
 
 			if resp := r.UseCase.ThenResponse; resp != nil {
-				fmt.Println("EXPECT HTTP", resp.Status)
+				body := ""
+
 				if resp.Body != nil {
-					fmt.Println(string(marshalIndent(resp.Body)))
+					body = (string(marshalIndent(resp.Body)))
 				}
+				fmt.Println("EXPECT HTTP", resp.Status, body)
 			}
 
 			if es := r.UseCase.ThenEvents; es != nil {
