@@ -14,13 +14,12 @@ type Registrar interface {
 
 type Module interface {
 	Register(r Registrar)
+	//	Spec() *Spec
 }
 
-type Factory func(pub Publisher) Module
-
 type Spec struct {
-	Name     string
-	Factory  Factory
+	Name string
+	//Factory  Factory
 	UseCases []UseCaseFactory
 }
 

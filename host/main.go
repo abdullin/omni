@@ -7,7 +7,7 @@ import (
 
 	"github.com/abdullin/omni/core/bus"
 	"github.com/abdullin/omni/core/env"
-	"github.com/abdullin/omni/reports"
+	"github.com/abdullin/omni/views"
 
 	"github.com/abdullin/omni/core/hosting"
 
@@ -16,17 +16,14 @@ import (
 
 var l = logging.MustGetLogger("main")
 
-var specs = []*env.Spec{
-	reports.Spec,
-}
-
 func main() {
 
 	router := mux.NewRouter()
 	memBus := bus.NewMem()
 
 	var wrap = bus.WrapWithLogging(memBus)
-	var host = hosting.New(wrap, specs)
+	modules := factory(wrap)
+	var host = hosting.New(modules)
 
 	host.WireHttp(router)
 	host.WireHandlers(memBus)
@@ -36,4 +33,10 @@ func main() {
 	bind := ":8001"
 	l.Info("Listening at %v", bind)
 	l.Panic(http.ListenAndServe(bind, router))
+}
+
+func factory(pub env.Publisher) []env.Module {
+	return []env.Module{
+		views.NewModule(pub),
+	}
 }

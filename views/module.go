@@ -17,7 +17,6 @@ func (m *Module) Register(r env.Registrar) {
 }
 
 var Spec = &env.Spec{
-	Name: "views",
-	//Factory:  NewModule,
+	Name:     "views",
 	UseCases: useCases,
 }
