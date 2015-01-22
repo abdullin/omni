@@ -7,11 +7,16 @@ import (
 )
 
 // default errors are in JSON
-func ReturnErrorJSON(status int) *env.Response {
+func ReturnErrorJSON(status int, error string) *env.Response {
 	return &env.Response{
-		Status:  status,
-		Body:    nil,
-		Headers: http.Header{},
+		Status: status,
+		Body: map[string]string{
+			"error": error,
+		},
+
+		Headers: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
 	}
 }
 

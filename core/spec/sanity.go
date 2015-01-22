@@ -14,7 +14,6 @@ func checkSanity(scenarios []*scenario) []string {
 
 	if len(scenarios) == 0 {
 		bad("Nothing to verify. Did you add usecases?")
-
 	}
 
 	for i, s := range scenarios {

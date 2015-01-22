@@ -126,6 +126,16 @@ func printDetail(r *Result) {
 
 	if es := r.UseCase.ThenEvents; es != nil {
 		fmt.Println("EXPECT", len(es), "event(s)")
+
+		for i, e := range es {
+			fmt.Printf("%v. %s\n", i, string(marshal(e)))
+		}
+	}
+	if es := r.Events; es != nil {
+		fmt.Println("ACTUAL", len(es), "event(s)")
+		for i, e := range es {
+			fmt.Printf("%v. %s\n", i, string(marshal(e)))
+		}
 	}
 
 	if len(r.ResponseDiffs) > 0 {
