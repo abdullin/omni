@@ -64,6 +64,8 @@ func (r *Report) ToTesting(t *testing.T) {
 			fmt.Println("♥", r.UseCase.Name)
 		} else {
 			specFailed = true
+
+			t.Fail()
 			fmt.Println("✗", r.UseCase.Name)
 		}
 	}
@@ -72,64 +74,70 @@ func (r *Report) ToTesting(t *testing.T) {
 		fmt.Println("\n================= DETAILS =================")
 
 		for _, r := range r.Resuls {
-			t.Fail()
-			fmt.Println("✗", r.UseCase.Name)
+			if !r.Ok() {
 
-			if len(r.UseCase.Given) > 0 {
-				fmt.Println("GIVEN")
-				for i, e := range r.UseCase.Given {
-					fmt.Println("  ", i+1, prettyPrintEvent(e))
-
-				}
-			}
-
-			if r.UseCase.When != nil {
-				when := r.UseCase.When
-				uri, err := url.Parse(when.Path)
-				guard("url.Parse", err)
-				fmt.Println("WHEN", when.Method, uri.Path)
-				query := uri.Query()
-				if len(query) > 0 {
-					fmt.Println("  with")
-
-					for k, _ := range query {
-						fmt.Printf("  %s = '%s'\n", k, query.Get(k))
-					}
-
-				}
-			}
-
-			if resp := r.UseCase.ThenResponse; resp != nil {
-				fmt.Printf("EXPECT ")
-				printResponse(resp)
-			}
-			if resp := r.Response; resp != nil {
-				fmt.Printf("ACTUAL ")
-				printResponse(resp)
-			}
-
-			if es := r.UseCase.ThenEvents; es != nil {
-				fmt.Println("EXPECT", len(es), "event(s)")
-			}
-
-			if len(r.ResponseDiffs) > 0 {
-
-				fmt.Println("Response issues:")
-				for _, x := range r.ResponseDiffs {
-					fmt.Println("  " + x)
-				}
-			}
-
-			if len(r.EventsDiffs) > 0 {
-				fmt.Println("Event issues:")
-				for _, x := range r.EventsDiffs {
-					fmt.Println("  " + x)
-				}
+				fmt.Println("✗", r.UseCase.Name)
+				printDetail(r)
 			}
 
 		}
 	}
 
+}
+
+func printDetail(r *Result) {
+
+	if len(r.UseCase.Given) > 0 {
+		fmt.Println("GIVEN")
+		for i, e := range r.UseCase.Given {
+			fmt.Println("  ", i+1, prettyPrintEvent(e))
+
+		}
+	}
+
+	if r.UseCase.When != nil {
+		when := r.UseCase.When
+		uri, err := url.Parse(when.Path)
+		guard("url.Parse", err)
+		fmt.Println("WHEN", when.Method, uri.Path)
+		query := uri.Query()
+		if len(query) > 0 {
+			fmt.Println("  with")
+
+			for k, _ := range query {
+				fmt.Printf("  %s = '%s'\n", k, query.Get(k))
+			}
+
+		}
+	}
+
+	if resp := r.UseCase.ThenResponse; resp != nil {
+		fmt.Printf("EXPECT ")
+		printResponse(resp)
+	}
+	if resp := r.Response; resp != nil {
+		fmt.Printf("ACTUAL ")
+		printResponse(resp)
+	}
+
+	if es := r.UseCase.ThenEvents; es != nil {
+		fmt.Println("EXPECT", len(es), "event(s)")
+	}
+
+	if len(r.ResponseDiffs) > 0 {
+
+		fmt.Println("Response issues:")
+		for _, x := range r.ResponseDiffs {
+			fmt.Println("  " + x)
+		}
+	}
+
+	if len(r.EventsDiffs) > 0 {
+		fmt.Println("Event issues:")
+		for _, x := range r.EventsDiffs {
+			fmt.Println("  " + x)
+		}
+	}
 }
 
 func printResponse(resp *env.Response) {
