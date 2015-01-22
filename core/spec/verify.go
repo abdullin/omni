@@ -42,7 +42,12 @@ func buildAndVerify(pub *publisher, spec *env.Spec, mod env.Module) *Report {
 	mod.Register(container)
 	scenarios := makeScenarios(spec.UseCases)
 
-	report.addInsanities(checkPreRunSanity(scenarios))
+	insanities := checkSanity(scenarios)
+	if len(insanities) > 0 {
+		// fail fast
+		report.addInsanities(insanities)
+		return report
+	}
 
 	router := mux.NewRouter()
 
@@ -59,24 +64,27 @@ func buildAndVerify(pub *publisher, spec *env.Spec, mod env.Module) *Report {
 			r()
 		}
 
+		result := &Result{
+			UseCase: s.UseCase,
+		}
+
 		dispatchEvents(s.UseCase.Given, container.Handlers)
 
-		response := performRequest(s.UseCase.When, router)
-		events := pub.Events
+		if s.UseCase.When != nil {
+			response := performRequest(s.UseCase.When, router)
+			decodedResponse := decodeResponse(response)
+			responseResult := verifyResponse(s.UseCase.ThenResponse, decodedResponse)
 
-		decodedResponse := decodeResponse(response)
+			result.ResponseDiffs = responseResult
+			result.ResponseRaw = response
+			result.Response = decodedResponse
+		}
+		{
+			events := pub.Events
+			eventsResult := verifyEvents(s.UseCase.ThenEvents, events)
 
-		eventsResult := verifyEvents(s.UseCase.ThenEvents, events)
-		responseResult := verifyResponse(s.UseCase.ThenResponse, decodedResponse)
-
-		//fmt.Println(responseResult.Diffs)
-		result := &Result{
-			UseCase:       s.UseCase,
-			ResponseRaw:   response,
-			Response:      decodedResponse,
-			Events:        events,
-			EventsDiffs:   eventsResult,
-			ResponseDiffs: responseResult,
+			result.Events = events
+			result.EventsDiffs = eventsResult
 		}
 
 		report.Resuls = append(report.Resuls, result)
@@ -105,6 +113,7 @@ func dispatchEvents(given []core.Event, handlers env.EventHandlerMap) {
 }
 
 func performRequest(when *env.Request, router http.Handler) *httptest.ResponseRecorder {
+
 	server := httptest.NewServer(router)
 	defer server.Close()
 
