@@ -10,6 +10,7 @@ import (
 var useCases = []env.UseCaseFactory{
 	given_no_tasks_get_inbox_returns_empty,
 	given_inbox_task_get_inbox_returns_it,
+	given_inbox_task_deleted_inbox_returns_nothing,
 }
 
 func given_no_tasks_get_inbox_returns_empty() *env.UseCase {
@@ -38,6 +39,23 @@ func given_inbox_task_get_inbox_returns_it() *env.UseCase {
 					"name":   e1.Name,
 					"taskId": e1.TaskId,
 				},
+			},
+		}),
+	}
+}
+
+func given_inbox_task_deleted_inbox_returns_nothing() *env.UseCase {
+
+	e1 := lang.NewTaskAdded(event(), task(), "Write a use case", true)
+	e2 := lang.NewTaskRemoved(event(), e1.TaskId)
+
+	return &env.UseCase{
+		Name:  "Given inbox task that is deleted, GET /inbox returns nothing",
+		Given: spec.GivenEvents(e1, e2),
+		When:  spec.GetJSON("/views/inbox", nil),
+		ThenResponse: spec.ReturnJSON(seq.Map{
+			"tasks": seq.Map{
+				"length": 0,
 			},
 		}),
 	}

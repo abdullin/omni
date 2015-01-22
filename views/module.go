@@ -19,6 +19,7 @@ func NewModule(pub env.Publisher) *Module {
 func (m *Module) Register(r env.Registrar) {
 	r.HandleHttp("GET", "/views/inbox", m.getInbox)
 	r.HandleEvents("views-denormalizer", m.d)
+	r.ResetData("store", m.s.reset)
 }
 
 var Spec = &env.Spec{

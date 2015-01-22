@@ -1,6 +1,8 @@
 package views
 
 import (
+	"fmt"
+
 	"github.com/abdullin/omni/core/api"
 	"github.com/abdullin/omni/lang"
 )
@@ -16,7 +18,8 @@ func (m *Module) getInbox(req *api.Request) api.Response {
 	}
 
 	var items = []task{}
-	for _, t := range m.s.all {
+	for k, t := range m.s.all {
+		fmt.Println("Serve", k, t)
 		items = append(items, task{t.TaskId, t.Name})
 	}
 
