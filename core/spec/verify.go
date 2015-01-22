@@ -54,6 +54,9 @@ func buildAndVerify(pub *publisher, spec *env.Spec, mod env.Module) *Report {
 
 		// reset data
 		pub.Clear()
+		for _, r := range container.DataReset {
+			r()
+		}
 
 		dispatchEvents(s.UseCase.Given, container.Handlers)
 

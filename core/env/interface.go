@@ -10,6 +10,7 @@ import (
 type Registrar interface {
 	HandleHttp(method string, path string, handler api.Handler)
 	HandleEvents(name string, handler EventHandler)
+	ResetData(name string, action func())
 }
 
 type Module interface {

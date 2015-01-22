@@ -6,14 +6,16 @@ import (
 
 func NewContainer() *Container {
 	return &Container{
-		Routes:   []*api.Route{},
-		Handlers: EventHandlerMap{},
+		Routes:    []*api.Route{},
+		Handlers:  EventHandlerMap{},
+		DataReset: make(map[string]func()),
 	}
 }
 
 type Container struct {
-	Routes   []*api.Route
-	Handlers EventHandlerMap
+	Routes    []*api.Route
+	Handlers  EventHandlerMap
+	DataReset map[string]func()
 }
 
 func (r *Container) HandleHttp(
@@ -28,4 +30,8 @@ func (r *Container) HandleEvents(
 	handler EventHandler,
 ) {
 	r.Handlers[name] = handler
+}
+
+func (r *Container) ResetData(name string, reset func()) {
+	r.DataReset[name] = reset
 }
