@@ -38,6 +38,10 @@ func (r *Report) failSanity(s string, args ...interface{}) {
 	r.Insanity = append(r.Insanity, fmt.Sprintf(s, args...))
 }
 
+func (r *Report) addInsanities(insanities []string) {
+	r.Insanity = append(r.Insanity, insanities...)
+}
+
 func prettyPrintEvent(e core.Event) string {
 	if e == nil {
 		return fmt.Sprintf("%T<nil>", e)

@@ -40,12 +40,13 @@ func buildAndVerify(pub *publisher, spec *env.Spec, mod env.Module) *Report {
 	// TODO: sanity checks
 	container := env.NewContainer()
 	mod.Register(container)
-
-	// wire routes
-
 	scenarios := makeScenarios(spec.UseCases)
+
+	report.addInsanities(checkPreRunSanity(scenarios))
+
 	router := mux.NewRouter()
 
+	// wire routes
 	for _, route := range container.Routes {
 		api.Handle(router, route)
 	}
