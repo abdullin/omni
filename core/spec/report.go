@@ -12,9 +12,10 @@ import (
 
 // Scenario result
 type Result struct {
-	UseCase  *env.UseCase
-	Events   []core.Event
-	Response *httptest.ResponseRecorder
+	UseCase     *env.UseCase
+	Events      []core.Event
+	ResponseRaw *httptest.ResponseRecorder
+	Response    *env.Response
 
 	EventsDiffs   []string
 	ResponseDiffs []string
@@ -99,12 +100,12 @@ func (r *Report) ToTesting(t *testing.T) {
 			}
 
 			if resp := r.UseCase.ThenResponse; resp != nil {
-				body := ""
-
-				if resp.Body != nil {
-					body = (string(marshalIndent(resp.Body)))
-				}
-				fmt.Println("EXPECT HTTP", resp.Status, body)
+				fmt.Printf("EXPECT ")
+				printResponse(resp)
+			}
+			if resp := r.Response; resp != nil {
+				fmt.Printf("ACTUAL ")
+				printResponse(resp)
 			}
 
 			if es := r.UseCase.ThenEvents; es != nil {
@@ -129,4 +130,14 @@ func (r *Report) ToTesting(t *testing.T) {
 		}
 	}
 
+}
+
+func printResponse(resp *env.Response) {
+
+	body := ""
+
+	if resp.Body != nil {
+		body = (string(marshalIndent(resp.Body)))
+	}
+	fmt.Println("HTTP", resp.Status, body)
 }

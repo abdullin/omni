@@ -60,13 +60,16 @@ func buildAndVerify(pub *publisher, spec *env.Spec, mod env.Module) *Report {
 		response := performRequest(s.UseCase.When, router)
 		events := pub.Events
 
+		decodedResponse := decodeResponse(response)
+
 		eventsResult := verifyEvents(s.UseCase.ThenEvents, events)
-		responseResult := verifyResponse(s.UseCase.ThenResponse, response)
+		responseResult := verifyResponse(s.UseCase.ThenResponse, decodedResponse)
 
 		//fmt.Println(responseResult.Diffs)
 		result := &Result{
 			UseCase:       s.UseCase,
-			Response:      response,
+			ResponseRaw:   response,
+			Response:      decodedResponse,
 			Events:        events,
 			EventsDiffs:   eventsResult,
 			ResponseDiffs: responseResult,
@@ -144,25 +147,34 @@ func decodeBody(response *httptest.ResponseRecorder) interface{} {
 	}
 }
 
+func decodeResponse(actual *httptest.ResponseRecorder) *env.Response {
+	return &env.Response{
+		Status:  actual.Code,
+		Headers: actual.HeaderMap,
+		Body:    decodeBody(actual),
+	}
+}
+
 func verifyEvents(then []interface{}, actual []core.Event) []string {
 	result := seq.Test(then, actual)
 	return result.Diffs
 }
 
-func verifyResponse(then *env.Response, recorded *httptest.ResponseRecorder) []string {
+func verifyResponse(then *env.Response, decoded *env.Response) []string {
 	expected := seq.Map{
 		"Status":  then.Status,
 		"Headers": then.Headers,
+		"Body":    then.Body,
 	}
 
-	if then.Body != nil {
-		expected["Body"] = then.Body
-	}
+	//if then.Body != nil {
+	//	expected["Body"] = then.Body
+	//}
 
 	actual := seq.Map{
-		"Status":  recorded.Code,
-		"Headers": recorded.HeaderMap,
-		"Body":    decodeBody(recorded),
+		"Status":  decoded.Status,
+		"Headers": decoded.Headers,
+		"Body":    decoded.Body,
 	}
 
 	result := seq.Test(expected, actual)
