@@ -10,12 +10,22 @@ type TaskAdded struct {
 	EventId EventId `json:"eventId"`
 	TaskId  TaskId  `json:"taskId"`
 	Name    string  `json:"name"`
-	Inbox   bool    `json:"inbox"`
 }
 
-func NewTaskAdded(event EventId, task TaskId, name string, inbox bool) *TaskAdded {
-	return &TaskAdded{event, task, name, inbox}
+func NewTaskAdded(event EventId, task TaskId, name string) *TaskAdded {
+	return &TaskAdded{event, task, name}
 }
+
+type TaskMovedToInbox struct {
+	EventId EventId `json:"eventId"`
+	TaskId  TaskId  `json:"taskId"`
+}
+
+func NewTaskMovedToInbox(event EventId, task TaskId) *TaskMovedToInbox {
+	return &TaskMovedToInbox{event, task}
+}
+
+func (e *TaskMovedToInbox) Meta() *Info { return i("TaskMovedToInbox", e.EventId) }
 
 type TaskRemoved struct {
 	EventId EventId `json:"eventId"`
