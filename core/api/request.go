@@ -1,6 +1,10 @@
 package api
 
-import "net/http"
+import (
+	"encoding/json"
+	"errors"
+	"net/http"
+)
 
 type Request struct {
 	Raw *http.Request
@@ -16,4 +20,16 @@ func (r *Request) String(param string) string {
 	} else {
 		return v
 	}
+}
+
+func (r *Request) ParseBody(subj interface{}) error {
+	content := r.Raw.Header.Get("Content-Type")
+	switch content {
+	case "application/json":
+		decoder := json.NewDecoder(r.Raw.Body)
+		return decoder.Decode(subj)
+
+	}
+	return errors.New("Unexpected content type " + content)
+
 }

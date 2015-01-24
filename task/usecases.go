@@ -15,7 +15,7 @@ func when_post_task_then_event_is_published() *env.UseCase {
 		Name: "When POST /task, then event is published",
 		When: spec.PostJSON("/task", seq.Map{
 			"name":  "NewTask",
-			"inbox": "true",
+			"inbox": true,
 		}),
 		ThenResponse: spec.ReturnJSON(seq.Map{
 			"name":  "NewTask",
@@ -25,6 +25,7 @@ func when_post_task_then_event_is_published() *env.UseCase {
 			seq.Map{
 				"name": "NewTask",
 			},
+			seq.Map{},
 		),
 	}
 }

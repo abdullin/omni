@@ -20,6 +20,13 @@ func NewError(error string, code int) Response {
 	return &errorResponse{code, error}
 }
 
+func BadRequestResponse(err string) Response {
+	return &errorResponse{
+		Code:  http.StatusBadRequest,
+		Error: err,
+	}
+}
+
 type ErrArgument struct {
 	Argument string
 	Problem  string

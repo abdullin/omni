@@ -17,3 +17,6 @@ func NewEventId() EventId {
 func NewContextId() ContextId {
 	return ContextId{NewId()}
 }
+
+var NoEventId = EventId{}
+var NoTaskId = TaskId{}
