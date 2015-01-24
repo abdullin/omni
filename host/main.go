@@ -7,6 +7,7 @@ import (
 
 	"github.com/abdullin/omni/core/bus"
 	"github.com/abdullin/omni/core/env"
+	"github.com/abdullin/omni/task"
 	"github.com/abdullin/omni/views"
 
 	"github.com/abdullin/omni/core/hosting"
@@ -38,5 +39,6 @@ func main() {
 func factory(pub env.Publisher) []env.Module {
 	return []env.Module{
 		views.NewModule(pub),
+		task.NewModule(pub),
 	}
 }
