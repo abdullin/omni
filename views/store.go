@@ -20,10 +20,13 @@ func (s *store) reset() {
 	s.all = make(map[lang.TaskId]*taskItem)
 }
 
-func (s *store) addTaskToInbox(id lang.TaskId, name string, inbox bool) {
-	s.all[id] = &taskItem{id, name, inbox}
+func (s *store) addTask(id lang.TaskId, name string) {
+	s.all[id] = &taskItem{id, name, false}
 }
 
 func (s *store) removeTask(id lang.TaskId) {
 	delete(s.all, id)
+}
+func (s *store) moveTaskToInbox(id lang.TaskId) {
+	s.all[id].Inbox = true
 }

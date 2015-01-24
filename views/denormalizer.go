@@ -16,9 +16,12 @@ func newDenormalizer(s *store) *denormalizer {
 func (d *denormalizer) HandleEvent(e core.Event) error {
 	switch t := e.(type) {
 	case *lang.TaskAdded:
-		d.s.addTaskToInbox(t.TaskId, t.Name, t.Inbox)
+		d.s.addTask(t.TaskId, t.Name)
 	case *lang.TaskRemoved:
 		d.s.removeTask(t.TaskId)
+	case *lang.TaskMovedToInbox:
+		d.s.moveTaskToInbox(t.TaskId)
+
 	}
 	return nil
 }
@@ -28,5 +31,6 @@ func (d *denormalizer) Contracts() []string {
 		"TaskAdded",
 		"TaskCreated",
 		"TaskRemoved",
+		"TaskMovedToInbox",
 	}
 }
