@@ -34,8 +34,8 @@ type EventHandler interface {
 type EventHandlerMap map[string]EventHandler
 
 type Publisher interface {
-	Publish(e core.Event) error
-	MustPublish(e core.Event)
+	Publish(e ...core.Event) error
+	MustPublish(e ...core.Event)
 }
 
 type Request struct {

@@ -21,11 +21,13 @@ func (m *mem) AddEventHandler(name string, h env.EventHandler) {
 	m.handlers[name] = h
 }
 
-func (m *mem) MustPublish(e core.Event) {
-	m.c <- e
+func (m *mem) MustPublish(es ...core.Event) {
+	for _, e := range es {
+		m.c <- e
+	}
 }
-func (m *mem) Publish(e core.Event) error {
-	m.c <- e
+func (m *mem) Publish(es ...core.Event) error {
+	m.MustPublish(es...)
 	return nil
 }
 
