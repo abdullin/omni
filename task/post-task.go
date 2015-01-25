@@ -27,7 +27,7 @@ func (m *Module) postTask(req *api.Request) api.Response {
 
 	// TODO - accept array
 	taskId := lang.NewTaskId()
-	m.pub.MustPublish(lang.NewTaskAdded(lang.NewEventId(), taskId, request.Name))
+	m.pub.MustPublish(lang.NewTaskAdded(lang.NewEventId(), &taskId, request.Name))
 	if request.Inbox {
 		m.pub.MustPublish(lang.NewTaskMovedToInbox(lang.NewEventId(), taskId))
 	}

@@ -168,8 +168,19 @@ func decodeResponse(actual *httptest.ResponseRecorder) *env.Response {
 	}
 }
 
-func verifyEvents(then []interface{}, actual []core.Event) []string {
-	result := seq.Test(then, actual)
+func verifyEvents(then []core.Event, actual []core.Event) []string {
+	prepareArray := func(es []core.Event) []map[string]interface{} {
+		out := []map[string]interface{}{}
+		for _, e := range es {
+			item := map[string]interface{}{}
+			unmarshal(marshal(e), &item)
+			item["$contract"] = e.Meta().Contract
+			out = append(out, item)
+
+		}
+		return out
+	}
+	result := seq.Test(prepareArray(then), prepareArray(actual))
 	return result.Diffs
 }
 

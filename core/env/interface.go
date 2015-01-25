@@ -57,6 +57,6 @@ type UseCase struct {
 	Given []core.Event
 	When  *Request
 
-	ThenEvents   []interface{}
+	ThenEvents   []core.Event
 	ThenResponse *Response
 }

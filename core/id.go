@@ -54,6 +54,15 @@ func (s Id) Equals(other Id) (eq bool) {
 	return
 }
 
+func (id Id) IsEmpty() bool {
+	for _, x := range id {
+		if x != 0 {
+			return true
+		}
+	}
+	return false
+}
+
 func (id Id) String() string {
 	return hex.EncodeToString(id[:])
 }
@@ -94,6 +103,9 @@ func ParseId(value string) (id Id, err error) {
 
 // JSON marshalling
 func (id Id) MarshalJSON() ([]byte, error) {
+	if id.IsEmpty() {
+		return []byte("\"\""), nil
+	}
 
 	jsonString := `"` + hex.EncodeToString(id[:]) + `"`
 	return []byte(jsonString), nil

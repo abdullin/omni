@@ -3,6 +3,7 @@ package task
 import (
 	"github.com/abdullin/omni/core/env"
 	"github.com/abdullin/omni/core/spec"
+	"github.com/abdullin/omni/lang"
 	"github.com/abdullin/seq"
 )
 
@@ -22,10 +23,8 @@ func when_post_task_then_event_is_published() *env.UseCase {
 			"inbox": "true",
 		}),
 		ThenEvents: spec.Events(
-			seq.Map{
-				"name": "NewTask",
-			},
-			seq.Map{},
+			lang.NewTaskAdded(lang.NoEventId, &lang.NoTaskId, "NewTask"),
+			lang.NewTaskMovedToInbox(lang.NoEventId, lang.NoTaskId),
 		),
 	}
 }
