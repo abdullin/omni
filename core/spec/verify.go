@@ -99,8 +99,10 @@ func buildAndVerify(pub *publisher, spec *env.Spec, mod env.Module) *Report {
 
 func excludeExpectedIssues(issues []seq.Issue, where env.Where) []string {
 
-	m := where.Map()
-
+	var m map[string]string
+	if where != nil {
+		m = where.Map()
+	}
 	cleaned := []string{}
 
 	groups := map[string][]seq.Issue{}
@@ -230,7 +232,15 @@ func verifyEvents(then []core.Event, actual []core.Event) *seq.Result {
 		}
 		return out
 	}
-	result := seq.Test(prepareArray(then), prepareArray(actual))
+
+	expectedMap := seq.Map{
+		"Events": prepareArray(then),
+	}
+	actualMap := seq.Map{
+		"Events": prepareArray(actual),
+	}
+	result := seq.Test(expectedMap, actualMap)
+
 	return result
 }
 

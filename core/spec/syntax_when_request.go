@@ -24,7 +24,17 @@ func PostJSON(url string, subj interface{}) *env.Request {
 		Headers: http.Header{
 			"Content-Type": []string{"application/json"},
 		},
-		// headers
+		Body: subj,
+	}
+}
+
+func PutJSON(url string, subj interface{}) *env.Request {
+	return &env.Request{
+		Method: "PUT",
+		Path:   url,
+		Headers: http.Header{
+			"Content-Type": []string{"application/json"},
+		},
 		Body: subj,
 	}
 }
