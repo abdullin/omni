@@ -10,7 +10,12 @@ import (
 type Values map[string]string
 
 func GetJSON(url string, values Values) *env.Request {
-	return &env.Request{"GET", url, nil, ""}
+	return &env.Request{
+		Method:  "GET",
+		Path:    url,
+		Headers: nil,
+		Body:    "",
+	}
 }
 func PostJSON(url string, subj interface{}) *env.Request {
 	return &env.Request{

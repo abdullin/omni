@@ -57,10 +57,10 @@ func (s Id) Equals(other Id) (eq bool) {
 func (id Id) IsEmpty() bool {
 	for _, x := range id {
 		if x != 0 {
-			return true
+			return false
 		}
 	}
-	return false
+	return true
 }
 
 func (id Id) String() string {

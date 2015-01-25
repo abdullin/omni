@@ -25,3 +25,9 @@ func marshalIndent(i interface{}) []byte {
 	}
 	return b
 }
+
+func marshalToMap(i interface{}) map[string]interface{} {
+	item := map[string]interface{}{}
+	unmarshal(marshal(i), &item)
+	return item
+}

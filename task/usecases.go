@@ -32,7 +32,7 @@ func when_post_task_then_event_is_published() *env.UseCase {
 			lang.NewTaskMovedToInbox(ignoreEventId, newTaskId),
 		),
 		Where: spec.Where{
-			newTaskId:     "newId",
+			newTaskId:     "newTaskId",
 			ignoreEventId: "ignore",
 		},
 	}

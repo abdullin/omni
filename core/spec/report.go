@@ -8,7 +8,6 @@ import (
 
 	"github.com/abdullin/omni/core"
 	"github.com/abdullin/omni/core/env"
-	"github.com/abdullin/seq"
 )
 
 // Scenario result
@@ -18,11 +17,11 @@ type Result struct {
 	ResponseRaw *httptest.ResponseRecorder
 	Response    *env.Response
 
-	Diffs []seq.Diff
+	Issues []string
 }
 
 func (r *Result) Ok() bool {
-	return len(r.Diffs) == 0
+	return len(r.Issues) == 0
 }
 
 type Report struct {
@@ -116,32 +115,32 @@ func printDetail(r *Result) {
 	}
 
 	if resp := r.UseCase.ThenResponse; resp != nil {
-		fmt.Printf("EXPECT ")
+		fmt.Printf("ExpectHTTP: ")
 		printResponse(resp)
 	}
 	if resp := r.Response; resp != nil {
-		fmt.Printf("ACTUAL ")
+		fmt.Printf("ActualHTTP: ")
 		printResponse(resp)
 	}
 
 	if es := r.UseCase.ThenEvents; es != nil {
-		fmt.Println("EXPECT", len(es), "event(s)")
+		fmt.Println("ExpectEvents:", len(es))
 
 		for i, e := range es {
 			fmt.Printf("%v. %s\n", i, string(marshal(e)))
 		}
 	}
 	if es := r.Events; es != nil {
-		fmt.Println("ACTUAL", len(es), "event(s)")
+		fmt.Println("ActualEvents:", len(es))
 		for i, e := range es {
 			fmt.Printf("%v. %s\n", i, string(marshal(e)))
 		}
 	}
 
-	if len(r.Diffs) > 0 {
+	if len(r.Issues) > 0 {
 		fmt.Println("Issues:")
-		for _, x := range r.Diffs {
-			fmt.Println("  " + x.String())
+		for _, x := range r.Issues {
+			fmt.Println("  " + x)
 		}
 	}
 
@@ -154,5 +153,5 @@ func printResponse(resp *env.Response) {
 	if resp.Body != nil {
 		body = (string(marshalIndent(resp.Body)))
 	}
-	fmt.Println("HTTP", resp.Status, body)
+	fmt.Println(resp.Status, body)
 }

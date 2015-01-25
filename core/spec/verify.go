@@ -70,12 +70,14 @@ func buildAndVerify(pub *publisher, spec *env.Spec, mod env.Module) *Report {
 
 		dispatchEvents(s.UseCase.Given, container.Handlers)
 
+		issues := []seq.Issue{}
+
 		if s.UseCase.When != nil {
 			response := performRequest(s.UseCase.When, router)
 			decodedResponse := decodeResponse(response)
 			responseResult := verifyResponse(s.UseCase.ThenResponse, decodedResponse)
 
-			result.Diffs = append(result.Diffs, responseResult.Diffs...)
+			issues = append(issues, responseResult.Issues...)
 
 			result.ResponseRaw = response
 			result.Response = decodedResponse
@@ -83,16 +85,63 @@ func buildAndVerify(pub *publisher, spec *env.Spec, mod env.Module) *Report {
 		{
 			events := pub.Events
 			eventsResult := verifyEvents(s.UseCase.ThenEvents, events)
-
 			result.Events = events
-
-			result.Diffs = append(result.Diffs, eventsResult.Diffs...)
+			issues = append(issues, eventsResult.Issues...)
 		}
+
+		result.Issues = excludeExpectedIssues(issues, s.UseCase.Where)
 
 		report.Resuls = append(report.Resuls, result)
 	}
 
 	return report
+}
+
+func excludeExpectedIssues(issues []seq.Issue, where env.Where) []string {
+
+	m := where.Map()
+
+	cleaned := []string{}
+
+	groups := map[string][]seq.Issue{}
+
+	for _, issue := range issues {
+		if excuse, ok := m[issue.ExpectedValue]; !ok {
+			// no excuse
+			cleaned = append(cleaned, issue.String())
+		} else {
+			switch excuse {
+			case "ignore":
+				break
+			default:
+				groups[excuse] = append(groups[excuse], issue)
+			}
+		}
+	}
+
+	for k, issues := range groups {
+		if !allItemsHaveSameValue(issues) {
+			line := fmt.Sprintf("Expected '%s' fields to be equal", k)
+			cleaned = append(cleaned, line)
+		}
+
+	}
+
+	return cleaned
+}
+
+func allItemsHaveSameValue(issues []seq.Issue) bool {
+	for i, issue := range issues {
+		if i == 0 {
+			continue
+		}
+
+		if issue.ActualValue != issues[0].ActualValue {
+			return false
+		}
+	}
+	return true
+
 }
 
 func guard(name string, err error) {
@@ -174,8 +223,7 @@ func verifyEvents(then []core.Event, actual []core.Event) *seq.Result {
 	prepareArray := func(es []core.Event) []map[string]interface{} {
 		out := []map[string]interface{}{}
 		for _, e := range es {
-			item := map[string]interface{}{}
-			unmarshal(marshal(e), &item)
+			item := marshalToMap(e)
 			item["$contract"] = e.Meta().Contract
 			out = append(out, item)
 

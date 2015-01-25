@@ -64,5 +64,5 @@ type UseCase struct {
 }
 
 type Where interface {
-	Map() map[interface{}]string
+	Map() map[string]string
 }
