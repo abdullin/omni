@@ -8,6 +8,8 @@ import (
 )
 
 var useCases = []env.UseCaseFactory{
+
+	given_no_task_when_put_then_not_found,
 	given_unchecked_task_when_check_then_event,
 	when_post_inbox_task_then_event_is_published,
 }
@@ -44,6 +46,18 @@ func given_unchecked_task_when_check_then_event() *env.UseCase {
 			lang.NewTaskChecked(IgnoreEventId, taskId),
 		),
 		Where: spec.Where{IgnoreEventId: "ignore"},
+	}
+}
+
+func given_no_task_when_put_then_not_found() *env.UseCase {
+	return &env.UseCase{
+		Name:  "Given no task, when PUT /task, then Not Found will be returned",
+		Given: spec.Events(),
+		When: spec.PutJSON("/task", seq.Map{
+			"taskId":  newTaskId(),
+			"checked": true,
+		}),
+		ThenResponse: spec.ReturnErrorJSON(404, "Task doesn't exist."),
 	}
 }
 

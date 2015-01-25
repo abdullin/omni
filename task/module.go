@@ -16,6 +16,7 @@ func NewModule(pub env.Publisher) *Module {
 
 func (m *Module) Register(r env.Registrar) {
 	r.HandleHttp("POST", "/task", m.postTask)
+	r.HandleHttp("PUT", "/task", m.putTask)
 	//r.HandleEvents("views-denormalizer", m.d)
 	//r.ResetData("store", m.s.reset)
 }
