@@ -27,6 +27,13 @@ func BadRequestResponse(err string) Response {
 	}
 }
 
+func NotImplementedResponse() Response {
+	return &errorResponse{
+		Code:  http.StatusInternalServerError,
+		Error: "Not implemented",
+	}
+}
+
 type ErrArgument struct {
 	Argument string
 	Problem  string
