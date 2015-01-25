@@ -81,6 +81,8 @@ func (r *Report) ToTesting(t *testing.T) {
 				fmt.Println("✗", r.UseCase.Name, "\n")
 
 				printDetail(r)
+
+				fmt.Println("-------------------------------------------------------\n")
 			}
 		}
 	}
