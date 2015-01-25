@@ -8,11 +8,11 @@ func i(contract string, eventId EventId) *Info {
 
 type TaskAdded struct {
 	EventId EventId `json:"eventId,omitempty"`
-	TaskId  *TaskId `json:"taskId,omitempty"`
+	TaskId  TaskId  `json:"taskId,omitempty"`
 	Name    string  `json:"name"`
 }
 
-func NewTaskAdded(event EventId, task *TaskId, name string) *TaskAdded {
+func NewTaskAdded(event EventId, task TaskId, name string) *TaskAdded {
 	return &TaskAdded{event, task, name}
 }
 

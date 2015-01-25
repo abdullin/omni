@@ -8,6 +8,7 @@ import (
 
 	"github.com/abdullin/omni/core"
 	"github.com/abdullin/omni/core/env"
+	"github.com/abdullin/seq"
 )
 
 // Scenario result
@@ -17,12 +18,11 @@ type Result struct {
 	ResponseRaw *httptest.ResponseRecorder
 	Response    *env.Response
 
-	EventsDiffs   []string
-	ResponseDiffs []string
+	Diffs []seq.Diff
 }
 
 func (r *Result) Ok() bool {
-	return len(r.ResponseDiffs)+len(r.EventsDiffs) == 0
+	return len(r.Diffs) == 0
 }
 
 type Report struct {
@@ -138,20 +138,13 @@ func printDetail(r *Result) {
 		}
 	}
 
-	if len(r.ResponseDiffs) > 0 {
-
-		fmt.Println("Response issues:")
-		for _, x := range r.ResponseDiffs {
-			fmt.Println("  " + x)
+	if len(r.Diffs) > 0 {
+		fmt.Println("Issues:")
+		for _, x := range r.Diffs {
+			fmt.Println("  " + x.String())
 		}
 	}
 
-	if len(r.EventsDiffs) > 0 {
-		fmt.Println("Event issues:")
-		for _, x := range r.EventsDiffs {
-			fmt.Println("  " + x)
-		}
-	}
 }
 
 func printResponse(resp *env.Response) {

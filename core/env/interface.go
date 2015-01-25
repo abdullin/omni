@@ -59,4 +59,10 @@ type UseCase struct {
 
 	ThenEvents   []core.Event
 	ThenResponse *Response
+
+	Where Where
+}
+
+type Where interface {
+	Map() map[interface{}]string
 }

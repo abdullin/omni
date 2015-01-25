@@ -75,7 +75,8 @@ func buildAndVerify(pub *publisher, spec *env.Spec, mod env.Module) *Report {
 			decodedResponse := decodeResponse(response)
 			responseResult := verifyResponse(s.UseCase.ThenResponse, decodedResponse)
 
-			result.ResponseDiffs = responseResult
+			result.Diffs = append(result.Diffs, responseResult.Diffs...)
+
 			result.ResponseRaw = response
 			result.Response = decodedResponse
 		}
@@ -84,7 +85,8 @@ func buildAndVerify(pub *publisher, spec *env.Spec, mod env.Module) *Report {
 			eventsResult := verifyEvents(s.UseCase.ThenEvents, events)
 
 			result.Events = events
-			result.EventsDiffs = eventsResult
+
+			result.Diffs = append(result.Diffs, eventsResult.Diffs...)
 		}
 
 		report.Resuls = append(report.Resuls, result)
@@ -168,7 +170,7 @@ func decodeResponse(actual *httptest.ResponseRecorder) *env.Response {
 	}
 }
 
-func verifyEvents(then []core.Event, actual []core.Event) []string {
+func verifyEvents(then []core.Event, actual []core.Event) *seq.Result {
 	prepareArray := func(es []core.Event) []map[string]interface{} {
 		out := []map[string]interface{}{}
 		for _, e := range es {
@@ -181,19 +183,15 @@ func verifyEvents(then []core.Event, actual []core.Event) []string {
 		return out
 	}
 	result := seq.Test(prepareArray(then), prepareArray(actual))
-	return result.Diffs
+	return result
 }
 
-func verifyResponse(then *env.Response, decoded *env.Response) []string {
+func verifyResponse(then *env.Response, decoded *env.Response) *seq.Result {
 	expected := seq.Map{
 		"Status":  then.Status,
 		"Headers": then.Headers,
 		"Body":    then.Body,
 	}
-
-	//if then.Body != nil {
-	//	expected["Body"] = then.Body
-	//}
 
 	actual := seq.Map{
 		"Status":  decoded.Status,
@@ -202,6 +200,6 @@ func verifyResponse(then *env.Response, decoded *env.Response) []string {
 	}
 
 	result := seq.Test(expected, actual)
-	return result.Diffs
+	return result
 
 }
