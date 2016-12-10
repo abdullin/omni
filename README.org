@@ -1,0 +1,35 @@
+* Omni - Work in progress
+
+This is a prototype library in golang for implementing event-driven
+micro-services with the support for cluster simulation. See [[https://github.com/abdullin/anthill][anthill]]
+project for more details.
+
+If you are looking for the original event-driven GTD sample check out
+[[https://github.com/abdullin/omni/tree/gtd][gtd]] tag in the repository.
+
+* Folder Structure
+
+Solution is composed from the core infrastructure and actual domain implementation.
+
+*Infrastructure*:
+
+- =bin= - temporary folder with compiled binaries
+- =core= - event-driven infrastructure and spec runners
+- =etc= - misc files (no source code)
+- =host= - entry point for the process
+
+
+-*Domain**:
+
+- =lang= - domain language (value objects and events)
+- =task= - module for editing and managing tasks
+- =views= - module with basic views for the client
+- /all the rest/ - event-driven modules with features
+
+## Learn More
+
+This project will be described in more detail in [GTD](http://abdullin.com/gtd/) series. 
+
+At the moment, content in the series is very limited. So you can instead check out the background:
+
+
