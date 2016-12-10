@@ -19,17 +19,10 @@ Solution is composed from the core infrastructure and actual domain implementati
 - =host= - entry point for the process
 
 
--*Domain**:
+*Domain*:
 
 - =lang= - domain language (value objects and events)
 - =task= - module for editing and managing tasks
 - =views= - module with basic views for the client
 - /all the rest/ - event-driven modules with features
-
-## Learn More
-
-This project will be described in more detail in [GTD](http://abdullin.com/gtd/) series. 
-
-At the moment, content in the series is very limited. So you can instead check out the background:
-
 
