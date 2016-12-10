@@ -6,8 +6,8 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/abdullin/omni/core"
-	"github.com/abdullin/omni/core/env"
+	"github.com/abdullin/omni"
+	"github.com/abdullin/omni/env"
 )
 
 // Scenario result

@@ -1,7 +1,7 @@
 package env
 
 import (
-	"github.com/abdullin/omni/core/api"
+	"github.com/abdullin/omni/api"
 )
 
 func NewContainer() *Container {

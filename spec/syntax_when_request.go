@@ -3,8 +3,8 @@ package spec
 import (
 	"net/http"
 
-	"github.com/abdullin/omni/core"
-	"github.com/abdullin/omni/core/env"
+	"github.com/abdullin/omni"
+	"github.com/abdullin/omni/env"
 )
 
 type Values map[string]string

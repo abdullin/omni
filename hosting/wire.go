@@ -1,6 +1,6 @@
 package hosting
 
-import "github.com/abdullin/omni/core/env"
+import "github.com/abdullin/omni/env"
 
 func New(modules []env.Module) *Context {
 	context := &Context{}

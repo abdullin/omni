@@ -3,8 +3,8 @@ package env
 import (
 	"net/http"
 
-	"github.com/abdullin/omni/core"
-	"github.com/abdullin/omni/core/api"
+	"github.com/abdullin/omni"
+	"github.com/abdullin/omni/api"
 )
 
 type Registrar interface {

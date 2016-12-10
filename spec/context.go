@@ -1,6 +1,6 @@
 package spec
 
-import "github.com/abdullin/omni/core/env"
+import "github.com/abdullin/omni/env"
 
 func NewContext(spec *env.Spec) *Context {
 	return &Context{

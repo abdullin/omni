@@ -3,8 +3,8 @@ package bus
 import (
 	"fmt"
 
-	"github.com/abdullin/omni/core"
-	"github.com/abdullin/omni/core/env"
+	"github.com/abdullin/omni"
+	"github.com/abdullin/omni/env"
 	"github.com/op/go-logging"
 )
 

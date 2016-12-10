@@ -8,9 +8,9 @@ import (
 
 	"bytes"
 
-	"github.com/abdullin/omni/core"
-	"github.com/abdullin/omni/core/api"
-	"github.com/abdullin/omni/core/env"
+	"github.com/abdullin/omni"
+	"github.com/abdullin/omni/api"
+	"github.com/abdullin/omni/env"
 	"github.com/abdullin/seq"
 	"github.com/gorilla/mux"
 )
